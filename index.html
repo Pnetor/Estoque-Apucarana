@@ -8,6 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <title>Estoque Apucarana – 20/07/2026</title>
 <style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html { overscroll-behavior-y: contain; }
+
   :root {
     --ink: #1c1611;
     --ink-soft: #56493e;
@@ -37,8 +41,6 @@
     --shadow-xl: 0 24px 60px rgba(28,22,17,.20), 0 6px 16px rgba(28,22,17,.10);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     font-family: var(--body);
     background: var(--paper);
@@ -56,7 +58,7 @@
       radial-gradient(ellipse at 18% -40%, rgba(255,255,255,.16), transparent 55%),
       linear-gradient(155deg, var(--brand) 0%, var(--brand-dark) 100%);
     color: #fff;
-    padding: 22px 18px 62px;
+    padding: calc(22px + env(safe-area-inset-top, 0px)) 18px 62px;
     position: relative;
     z-index: 10;
     box-shadow: var(--shadow-lg);
@@ -121,26 +123,30 @@
   }
   .search-wrap input {
     width: 100%;
-    padding: 12px 40px 12px 15px;
+    padding: 13px 40px 13px 15px;
     border-radius: 12px;
     border: none;
-    font-size: 14px;
+    font-size: 16px;
     font-family: var(--body);
     background: rgba(255,255,255,.97);
     color: var(--ink);
     outline: none;
     box-shadow: var(--shadow-md), inset 0 0 0 1px rgba(255,255,255,.6);
     transition: box-shadow .15s;
+    -webkit-appearance: none;
   }
   .search-wrap input:focus {
     box-shadow: var(--shadow-lg), 0 0 0 3px rgba(255,255,255,.28);
   }
   .search-wrap input::placeholder { color: #a89b8d; }
   .search-wrap .clear-btn {
-    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    width: 32px; height: 32px;
+    display: none; align-items: center; justify-content: center;
     background: none; border: none; cursor: pointer; color: #a89b8d; font-size: 16px;
-    display: none;
+    border-radius: 50%;
   }
+  .search-wrap .clear-btn:active { background: rgba(0,0,0,.06); }
 
   /* Control panel — floats over header bottom edge */
   .panel {
@@ -203,19 +209,23 @@
 
   .pill {
     flex-shrink: 0;
-    padding: 7px 15px;
+    padding: 9px 16px;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
     border-radius: 20px;
     border: 1.5px solid var(--line);
     background: var(--surface);
     font-family: var(--body);
-    font-size: 12px;
+    font-size: 12.5px;
     font-weight: 600;
     color: var(--ink-soft);
     cursor: pointer;
-    transition: all .18s cubic-bezier(.4,0,.2,1);
+    transition: all .15s cubic-bezier(.4,0,.2,1);
     white-space: nowrap;
   }
   .pill:hover { border-color: var(--brand-glow); color: var(--brand); }
+  .pill:active { transform: scale(.96); }
   .pill.active {
     background: var(--brand);
     border-color: var(--brand);
@@ -223,9 +233,10 @@
     box-shadow: 0 3px 10px rgba(143,14,40,.32);
     transform: translateY(-1px);
   }
+  .pill.active:active { transform: translateY(-1px) scale(.96); }
 
   /* Content */
-  .content { padding: 22px 14px 40px; }
+  .content { padding: 22px 14px calc(40px + env(safe-area-inset-bottom, 0px)); }
 
   /* Section header */
   .section-hdr {
@@ -233,9 +244,12 @@
     align-items: center;
     gap: 9px;
     padding: 16px 3px 10px;
+    min-height: 30px;
     cursor: pointer;
     user-select: none;
+    transition: opacity .12s;
   }
+  .section-hdr:active { opacity: .6; }
   .section-hdr .section-label {
     font-family: var(--display);
     font-size: 13.5px;
@@ -309,6 +323,7 @@
     transition: background .15s;
   }
   .card:hover { background: #fbf7ee; }
+  .card:active { background: #f7f0e3; }
   .cards .card:last-child { border-bottom: none; }
 
   .card.available  { border-left-color: var(--green); }
@@ -429,15 +444,16 @@
 
   /* ── VALIDADES ── */
   .val-btn {
-    display: inline-block; margin-left: 8px;
+    display: inline-flex; align-items: center; margin-left: 8px;
     background: #eef2fb; border: 1px solid #c7d4f2;
-    border-radius: 10px; padding: 3px 10px;
+    border-radius: 10px; padding: 5px 11px;
     font-family: var(--mono);
     font-size: 10px; font-weight: 700; color: #2b4fa8;
     cursor: pointer; vertical-align: middle; white-space: nowrap;
     transition: transform .12s;
   }
   .val-btn:hover { transform: translateY(-1px); }
+  .val-btn:active { transform: scale(.95); }
   .val-btn-alert { background: var(--red-soft); border-color: #dba09b; color: var(--red-status); }
   .val-panel { flex: 0 0 100%; margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 10px; }
   .val-table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: var(--mono); }
@@ -513,7 +529,7 @@
     <div class="cards">
       <div class="card priority-card available" data-name="Coxinha" data-section="resfriados" data-status="available">
         <div class="card-info"><div class="card-name">Coxinha</div><div class="card-code">FRASCANMI000047 · Cx 10,5 kg</div><div class="card-cancao">Cód. Canção: 91396</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRASCANMI000047">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">493,5 kg</div><div class="stock-cx">47 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">420 kg</div><div class="stock-cx">40 caixas</div></div>
         
         
         
@@ -535,7 +551,7 @@
       </div>
       <div class="card priority-card available" data-name="Meio da Asa" data-section="resfriados" data-status="available">
         <div class="card-info"><div class="card-name">Meio da Asa</div><div class="card-code">FRASCANMI000048 · Cx 10,2 kg</div><div class="card-cancao">Cód. Canção: 91402</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRASCANMI000048">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.275 kg</div><div class="stock-cx">125 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.091,4 kg</div><div class="stock-cx">107 caixas</div></div>
         
         
         
@@ -571,7 +587,7 @@
       </div>
       <div class="card priority-card available" data-name="Sobrecoxa" data-section="resfriados" data-status="available">
         <div class="card-info"><div class="card-name">Sobrecoxa</div><div class="card-code">FRCSCANMI000051 · Cx 13 kg</div><div class="card-cancao">Cód. Canção: 91395</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRCSCANMI000051">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">559 kg</div><div class="stock-cx">43 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">507 kg</div><div class="stock-cx">39 caixas</div></div>
         
         
         
@@ -584,7 +600,7 @@
       </div>
       <div class="card priority-card available" data-name="Meio Filé" data-section="resfriados" data-status="available">
         <div class="card-info"><div class="card-name">Meio Filé</div><div class="card-code">FRPTCANMI000062 · Cx 11,2 kg</div><div class="card-cancao">Cód. Canção: 91397</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRPTCANMI000062">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">2.060,8 kg</div><div class="stock-cx">184 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.881,6 kg</div><div class="stock-cx">168 caixas</div></div>
         
         
         
@@ -603,7 +619,7 @@
       </div>
       <div class="card priority-card available" data-name="Sassami" data-section="resfriados" data-status="available">
         <div class="card-info"><div class="card-name">Sassami</div><div class="card-code">FRPTCANMI000061 · Cx 11,4 kg</div><div class="card-cancao">Cód. Canção: 91399</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRPTCANMI000061">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">638,4 kg</div><div class="stock-cx">56 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">570 kg</div><div class="stock-cx">50 caixas</div></div>
         
         
         
@@ -641,7 +657,7 @@
     <div class="cards">
       <div class="card priority-card available" data-name="Frango Inteiro" data-section="resfriados" data-status="available">
         <div class="card-info"><div class="card-name">Frango Inteiro</div><div class="card-code">FRINCANMI000002 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 69964</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRINCANMI000002">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">580 kg</div><div class="stock-cx">29 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">500 kg</div><div class="stock-cx">25 caixas</div></div>
         
         
         
@@ -663,6 +679,7 @@
         <div class="card-info"><div class="card-name">Frango Carcaça Temperado</div><div class="card-code">FRINCANMI000017 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91417</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -753,7 +770,7 @@
       </div>
       <div class="card priority-card available" data-name="Coxinha Pacote" data-section="resfriados" data-status="available">
         <div class="card-info"><div class="card-name">Coxinha</div><div class="card-code">FRASCANMI000027 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91192</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRASCANMI000027">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.940 kg</div><div class="stock-cx">97 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.880 kg</div><div class="stock-cx">94 caixas</div></div>
         
         
         
@@ -762,7 +779,7 @@
       </div>
       <div class="card priority-card available" data-name="Coxa e Sobrecoxa Resfriado" data-section="resfriados" data-status="available">
         <div class="card-info"><div class="card-name">Coxa e Sobrecoxa</div><div class="card-code">FRCSCANMI000018 · Cx 18 kg</div><div class="card-cancao">Cód. Canção: 84374</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRCSCANMI000018">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">14.004 kg</div><div class="stock-cx">778 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">12.978 kg</div><div class="stock-cx">721 caixas</div></div>
         
         
       </div>
@@ -816,7 +833,7 @@
       </div>
       <div class="card priority-card available" data-name="Filé de Peito Resfriado" data-section="resfriados" data-status="available">
         <div class="card-info"><div class="card-name">Filé de Peito</div><div class="card-code">FRPTCANMI000065 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91424</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRPTCANMI000065">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">5.780 kg</div><div class="stock-cx">289 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">5.000 kg</div><div class="stock-cx">250 caixas</div></div>
         
         
         
@@ -883,7 +900,7 @@
       </div>
       <div class="card priority-card available" data-name="Coração Resfriado" data-section="resfriados" data-status="available">
         <div class="card-info"><div class="card-name">Coração</div><div class="card-code">FRMDCANMI000020 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91247</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRMDCANMI000020">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">780 kg</div><div class="stock-cx">39 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">700 kg</div><div class="stock-cx">35 caixas</div></div>
         
         
         
@@ -894,7 +911,7 @@
       </div>
       <div class="card priority-card available" data-name="Moela Resfriada" data-section="resfriados" data-status="available">
         <div class="card-info"><div class="card-name">Moela</div><div class="card-code">FRMDCANMI000008 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 71313</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRMDCANMI000008">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">3.080 kg</div><div class="stock-cx">154 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">2.860 kg</div><div class="stock-cx">143 caixas</div></div>
 
 
 
@@ -919,6 +936,7 @@
         <div class="card-info"><div class="card-name">Frango Inteiro</div><div class="card-code">FRINCANMI000003 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 69963</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -1013,6 +1031,7 @@
         
         
         
+        
 
 
 
@@ -1022,6 +1041,7 @@
         <div class="card-info"><div class="card-name">Frango Temperado 20kg</div><div class="card-code">FRINCANMI000005 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91078</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -1091,6 +1111,7 @@
         
         
         
+        
       </div>
       <div class="card available" data-name="Galinha Inteira Congelada 20kg" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Galinha Inteira 20kg</div><div class="card-code">COMPRO000083 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91357</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000083">📅 ver validades</button></div>
@@ -1104,6 +1125,7 @@
         <div class="card-info"><div class="card-name">Galo Inteiro 20kg</div><div class="card-code">COMPRO000084 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91359</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -1194,12 +1216,14 @@
         
         
         
+        
 
       </div>
       <div class="card has-obs no-stock" data-name="Carcaça 1650 1750" data-section="congelados" data-status="no-stock">
         <div class="card-info"><div class="card-name">Carcaça 1,650/1,750</div><div class="card-code">FRINCANMI000011 · Cx 13,6 kg</div><div class="card-cancao">Cód. Canção: 91346</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -1277,6 +1301,7 @@
         
         
         
+        
 
 
 
@@ -1289,6 +1314,7 @@
         <div class="card-info"><div class="card-name">Carcaça 1,850/1,950</div><div class="card-code">FRINCANMI000013</div><div class="card-cancao">Cód. Canção: 91348</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -1358,6 +1384,7 @@
         
         
         
+        
       </div>
       <div class="card has-obs no-stock" data-name="Carcaça 2050 2150" data-section="congelados" data-status="no-stock">
         <div class="card-info"><div class="card-name">Carcaça 2,050/2,150</div><div class="card-code">FRINCANMI000015</div><div class="card-cancao">Cód. Canção: 91350</div></div>
@@ -1395,11 +1422,13 @@
         
         
         
+        
       </div>
       <div class="card has-obs no-stock" data-name="Carcaça 2150 2250" data-section="congelados" data-status="no-stock">
         <div class="card-info"><div class="card-name">Carcaça 2,150/2,250</div><div class="card-code">FRINCANMI000016</div><div class="card-cancao">Cód. Canção: 91351</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -1473,15 +1502,17 @@
         
         
         
+        
       </div>
       <div class="card available" data-name="Coxinha de Asa" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Coxinha de Asa</div><div class="card-code">FRASCANMI000029 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91308</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRASCANMI000029">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">5.060 kg</div><div class="stock-cx">253 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">5.020 kg</div><div class="stock-cx">251 caixas</div></div>
       </div>
       <div class="card has-obs no-stock" data-name="Meio da Asa Individual" data-section="congelados" data-status="no-stock">
         <div class="card-info"><div class="card-name">Meio da Asa – Individual</div><div class="card-code">FRASCANMI000007 · Cx 18 kg</div><div class="card-cancao">Cód. Canção: 10420</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -1585,6 +1616,7 @@
         
         
         
+        
       </div>
       <div class="card available" data-name="Meio da Asa com Osso Pct 10kg" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Meio da Asa c/Osso Pct 10kg</div><div class="card-code">FRASCANMI000043 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91391</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRASCANMI000043">📅 ver validades</button></div>
@@ -1606,6 +1638,7 @@
         <div class="card-info"><div class="card-name">Coxa Desossada 800g</div><div class="card-code">FRCSCANMI000023 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91030</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -1701,10 +1734,11 @@
         
         
         
+        
       </div>
       <div class="card available" data-name="Coxa e Sobrecoxa Individual" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Coxa e Sobrecoxa</div><div class="card-code">FRCSCANMI000003 · Cx 18 kg</div><div class="card-cancao">Cód. Canção: 2364</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRCSCANMI000003">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">61.918 kg</div><div class="stock-cx">3440 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">61.414 kg</div><div class="stock-cx">3412 caixas</div></div>
         
         
       </div>
@@ -1750,6 +1784,7 @@
         
         
         
+        
 
 
 
@@ -1764,6 +1799,7 @@
         <div class="card-info"><div class="card-name">Filé Coxa c/ Sobrecoxa 2kg</div><div class="card-code">FRCSCANMI000019 · Cx 18 kg</div><div class="card-cancao">Cód. Canção: 79563</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -1859,12 +1895,14 @@
         
         
         
+        
 
       </div>
       <div class="card no-stock has-obs" data-name="Sobrecoxa Interfolhada" data-section="congelados" data-status="no-stock">
         <div class="card-info"><div class="card-name">Sobrecoxa – Interfolhada</div><div class="card-code">FRCSCANMI000005 · Cx 18 kg</div><div class="card-cancao">Cód. Canção: 2398</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -1942,12 +1980,14 @@
         
         
         
+        
 
       </div>
       <div class="card has-obs no-stock" data-name="Filé de Peito Interfolhado" data-section="congelados" data-status="no-stock">
         <div class="card-info"><div class="card-name">Filé de Peito – Interfolhado</div><div class="card-code">FRPTCANMI000027 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91339</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -1988,12 +2028,13 @@
       </div>
       <div class="card available" data-name="Filé de Peito Individual" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Filé de Peito – Individual</div><div class="card-code">FRPTCANMI000033 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91194</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRPTCANMI000033">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">52.840 kg</div><div class="stock-cx">2642 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">52.680 kg</div><div class="stock-cx">2634 caixas</div></div>
       </div>
       <div class="card has-obs no-stock" data-name="Meio Filé Interfolhado" data-section="congelados" data-status="no-stock">
         <div class="card-info"><div class="card-name">Meio Filé – Interfolhado</div><div class="card-code">FRPTCANMI000051 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91372</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -2063,12 +2104,13 @@
       </div>
       <div class="card available" data-name="Meio Filé Pct 1kg" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Meio Filé – Pct 1kg</div><div class="card-code">FRPTCANMI000060 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91427</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRPTCANMI000060">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">4.680 kg</div><div class="stock-cx">234 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">4.580 kg</div><div class="stock-cx">229 caixas</div></div>
       </div>
       <div class="card has-obs no-stock" data-name="Meio Filé ME" data-section="congelados" data-status="no-stock">
         <div class="card-info"><div class="card-name">Meio Filé ME</div><div class="card-code">FRPTCANME000004 · Cx 12 kg</div><div class="card-cancao">Cód. Canção: 15776</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -2138,7 +2180,7 @@
       </div>
       <div class="card available" data-name="Peito com Osso" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Peito com Osso</div><div class="card-code">FRPTCANMI000004 · Cx 18 kg</div><div class="card-cancao">Cód. Canção: 2392</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRPTCANMI000004">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">18.144 kg</div><div class="stock-cx">1008 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">18.126 kg</div><div class="stock-cx">1007 caixas</div></div>
       </div>
       <div class="card available" data-name="Recorte Filé Peito Filé Coxa" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Recorte Filé Peito + Filé Coxa</div><div class="card-code">FRMRCANMI000002 · Cx 18 kg</div><div class="card-cancao">Cód. Canção: 54176</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRMRCANMI000002">📅 ver validades</button></div>
@@ -2150,7 +2192,7 @@
       </div>
       <div class="card available" data-name="Sassami Individual" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Sassami – Individual</div><div class="card-code">FRPTCANMI000043 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91309</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRPTCANMI000043">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.400 kg</div><div class="stock-cx">70 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.160 kg</div><div class="stock-cx">58 caixas</div></div>
         
         
         
@@ -2168,6 +2210,7 @@
         <div class="card-info"><div class="card-name">Sassami – Pct 1kg</div><div class="card-code">FRPTCANMI000046 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91317</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -2277,6 +2320,7 @@
         
         
         
+        
 
 
 
@@ -2348,11 +2392,12 @@
         
         
         
+        
 
       </div>
       <div class="card available" data-name="Coração 1kg" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Coração 1kg</div><div class="card-code">FRMDCANMI000015 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91263</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRMDCANMI000015">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.580 kg</div><div class="stock-cx">79 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.520 kg</div><div class="stock-cx">76 caixas</div></div>
         
         
         
@@ -2399,10 +2444,11 @@
         
         
         
+        
       </div>
       <div class="card available" data-name="Fígado 1kg" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Fígado 1kg</div><div class="card-code">FRMDCANMI000016 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91254</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRMDCANMI000016">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">3.340 kg</div><div class="stock-cx">167 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">3.320 kg</div><div class="stock-cx">166 caixas</div></div>
         
         
         
@@ -2442,15 +2488,17 @@
         
         
         
+        
       </div>
       <div class="card available" data-name="Moela 1kg" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Moela 1kg</div><div class="card-code">FRMDCANMI000022 · Cx 20 kg</div><div class="card-cancao">Cód. Canção: 91289</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRMDCANMI000022">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">11.540 kg</div><div class="stock-cx">577 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">11.440 kg</div><div class="stock-cx">572 caixas</div></div>
       </div>
       <div class="card has-obs no-stock" data-name="Pés Carijo Pct 7,5" data-section="congelados" data-status="no-stock">
         <div class="card-info"><div class="card-name">Pés Carijo Pct 7,5</div><div class="card-code">FRPECANMI000002 · Cx 15 kg</div><div class="card-cancao">Cód. Canção: 91392</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -2543,12 +2591,14 @@
         
         
         
+        
 
       </div>
       <div class="card has-obs no-stock" data-name="Pés Pct 7,5" data-section="congelados" data-status="no-stock">
         <div class="card-info"><div class="card-name">Pés Pct 7,5</div><div class="card-code">FRPECANME000003 · Cx 15 kg</div><div class="card-cancao">Cód. Canção: 91294</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -2592,7 +2642,7 @@
       </div>
       <div class="card available" data-name="Sambiquira 1kg" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Sambiquira 1kg</div><div class="card-code">FRSACANMI000001 · Cx 18 kg</div><div class="card-cancao">Cód. Canção: 70142</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRSACANMI000001">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.656 kg</div><div class="stock-cx">92 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.620 kg</div><div class="stock-cx">90 caixas</div></div>
       </div>
     </div>
 
@@ -2612,12 +2662,13 @@
       </div>
       <div class="card available" data-name="Meio Peito Congelado Bandeja 1kg" data-section="congelados" data-status="available">
         <div class="card-info"><div class="card-name">Meio Peito Cong. Bandeja 1kg</div><div class="card-code">FRPTCANMI000059 · Cx 12 kg</div><div class="card-cancao">Cód. Canção: 91434</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRPTCANMI000059">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.356 kg</div><div class="stock-cx">113 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.332 kg</div><div class="stock-cx">111 caixas</div></div>
       </div>
       <div class="card has-obs no-stock" data-name="Sobrecoxa Congelada Bandeja 1kg" data-section="congelados" data-status="no-stock">
         <div class="card-info"><div class="card-name">Sobrecoxa Cong. Bandeja 1kg</div><div class="card-code">FRCSCANMI000041 · Cx 12 kg</div><div class="card-cancao">Cód. Canção: 91440</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -2739,6 +2790,7 @@
         
         
         
+        
 
 
 
@@ -2786,6 +2838,7 @@
         
         
         
+        
       </div>
       <div class="card available" data-name="Coxa Pilão IQF 1kg" data-section="iqf" data-status="available">
         <div class="card-info"><div class="card-name">Coxa Pilão IQF 1kg</div><div class="card-code">FRCSCANMI000009 · Cx 10 kg</div><div class="card-cancao">Cód. Canção: 62160</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRCSCANMI000009">📅 ver validades</button></div>
@@ -2793,7 +2846,7 @@
       </div>
       <div class="card available" data-name="Coxinha IQF 1kg" data-section="iqf" data-status="available">
         <div class="card-info"><div class="card-name">Coxinha IQF 1kg</div><div class="card-code">FRASCANMI000010 · Cx 10 kg</div><div class="card-cancao">Cód. Canção: 62157</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRASCANMI000010">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.170 kg</div><div class="stock-cx">117 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">770 kg</div><div class="stock-cx">77 caixas</div></div>
         
         
         
@@ -2859,7 +2912,7 @@
       </div>
       <div class="card available" data-name="Filé de Peito em Bifes IQF 1kg" data-section="iqf" data-status="available">
         <div class="card-info"><div class="card-name">Filé de Peito em Bifes IQF 1kg</div><div class="card-code">FRPTCANMI000069 · Cx 10 kg</div><div class="card-cancao">Cód. Canção: 91444</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRPTCANMI000069">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">12.520 kg</div><div class="stock-cx">1252 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">12.510 kg</div><div class="stock-cx">1251 caixas</div></div>
       </div>
       <div class="card available" data-name="Filé de Sobrecoxa IQF 1kg" data-section="iqf" data-status="available">
         <div class="card-info"><div class="card-name">Filé de Sobrecoxa IQF 1kg</div><div class="card-code">FRCSCANMI000055 · Cx 10 kg</div><div class="card-cancao">Cód. Canção: 91438</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRCSCANMI000055">📅 ver validades</button></div>
@@ -2869,6 +2922,7 @@
         <div class="card-info"><div class="card-name">Meio da Asa IQF 800g</div><div class="card-code">FRASCANMI000023 · Cx 9,6 kg</div><div class="card-cancao">Cód. Canção: 91319</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -2922,7 +2976,7 @@
       </div>
       <div class="card available" data-name="Meio da Asa IQF 1kg" data-section="iqf" data-status="available">
         <div class="card-info"><div class="card-name">Meio da Asa IQF 1kg</div><div class="card-code">FRASCANMI000011 · Cx 10 kg</div><div class="card-cancao">Cód. Canção: 62158</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRASCANMI000011">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.730 kg</div><div class="stock-cx">173 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.600 kg</div><div class="stock-cx">160 caixas</div></div>
         
         
         
@@ -2932,7 +2986,7 @@
       </div>
       <div class="card available" data-name="Meio Filé IQF 1kg" data-section="iqf" data-status="available">
         <div class="card-info"><div class="card-name">Meio Filé IQF 1kg</div><div class="card-code">FRPTCANMI000021 · Cx 10 kg</div><div class="card-cancao">Cód. Canção: 88846</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRPTCANMI000021">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.670 kg</div><div class="stock-cx">167 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.610 kg</div><div class="stock-cx">161 caixas</div></div>
 
 
 
@@ -2941,12 +2995,13 @@
       </div>
       <div class="card available" data-name="Sassami IQF 1kg" data-section="iqf" data-status="available">
         <div class="card-info"><div class="card-name">Sassami IQF 1kg</div><div class="card-code">FRPTCANMI000010 · Cx 10 kg</div><div class="card-cancao">Cód. Canção: 62159</div> <button class="val-btn" onclick="toggleVal(this)" data-code="FRPTCANMI000010">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">6.630 kg</div><div class="stock-cx">663 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">6.060 kg</div><div class="stock-cx">606 caixas</div></div>
       </div>
       <div class="card has-obs no-stock" data-name="Sassami IQF 6kg" data-section="iqf" data-status="no-stock">
         <div class="card-info"><div class="card-name">Sassami IQF 6kg</div><div class="card-code">FRPTCANMI000013 · Cx 12 kg</div><div class="card-cancao">Cód. Canção: 64346</div></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -3033,23 +3088,23 @@
     <div class="cards" style="border-radius:8px;overflow:hidden;margin-top:4px;">
       <div class="card available" data-name="Anel de Cebola 6,6kg" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Anel de Cebola 6,6kg</div><div class="card-code">COMPRO000074 · Cx 6,6 kg</div><div class="card-cancao">Cód. Canção: 91373</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000074">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">2.131,8 kg</div><div class="stock-cx">323 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">2.112 kg</div><div class="stock-cx">320 caixas</div></div>
       </div>
       <div class="card available" data-name="Anel de Cebola 11kg" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Anel de Cebola 11kg</div><div class="card-code">COMPRO000009 · Cx 11 kg</div><div class="card-cancao">Cód. Canção: 67983</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000009">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">2.189 kg</div><div class="stock-cx">199 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">2.178 kg</div><div class="stock-cx">198 caixas</div></div>
       </div>
       <div class="card available" data-name="Batata 400g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Batata 400g</div><div class="card-code">COMPRO000068 · Cx 10 kg</div><div class="card-cancao">Cód. Canção: 91329</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000068">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">3.770 kg</div><div class="stock-cx">377 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">3.750 kg</div><div class="stock-cx">375 caixas</div></div>
       </div>
       <div class="card available" data-name="Batata 1,1kg" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Batata 1,1kg</div><div class="card-code">COMPRO000069 · Cx 9,9 kg</div><div class="card-cancao">Cód. Canção: 91330</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000069">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">9.999 kg</div><div class="stock-cx">1010 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">9.949,5 kg</div><div class="stock-cx">1005 caixas</div></div>
       </div>
       <div class="card available" data-name="Batata 2kg" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Batata 2kg</div><div class="card-code">COMPRO000067 · Cx 10 kg</div><div class="card-cancao">Cód. Canção: 91328</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000067">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">13.230 kg</div><div class="stock-cx">1323 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">13.220 kg</div><div class="stock-cx">1322 caixas</div></div>
         
         
         
@@ -3062,7 +3117,7 @@
       </div>
       <div class="card available" data-name="Chicken 300g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Chicken 300g</div><div class="card-code">COMPRO000065 · Cx 3 kg</div><div class="card-cancao">Cód. Canção: 91326</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000065">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.122 kg</div><div class="stock-cx">374 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.116 kg</div><div class="stock-cx">372 caixas</div></div>
         
         
       </div>
@@ -3072,7 +3127,7 @@
       </div>
       <div class="card available" data-name="Fut Chicken 300g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Fut Chicken 300g</div><div class="card-code">COMPRO000099 · Cx 3 kg</div><div class="card-cancao">Cód. Canção: 91409</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000099">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">4.614 kg</div><div class="stock-cx">1538 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">4.611 kg</div><div class="stock-cx">1537 caixas</div></div>
 
       </div>
       <div class="card available" data-name="Fut Chicken 1kg" data-section="alimentos" data-status="available">
@@ -3081,20 +3136,21 @@
       </div>
       <div class="card available" data-name="Fut Chicken com Recheio de Queijo" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Fut Chicken c/ Recheio Queijo</div><div class="card-code">COMPRO000119 · Cx 4,2 kg</div><div class="card-cancao">Cód. Canção: 91455</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000119">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">2.738,4 kg</div><div class="stock-cx">652 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">2.734,2 kg</div><div class="stock-cx">651 caixas</div></div>
       </div>
       <div class="card available" data-name="Sassami Empanado 700g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Sassami Empanado 700g</div><div class="card-code">COMPRO000008 · Cx 7 kg</div><div class="card-cancao">Cód. Canção: 67772</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000008">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">6.608 kg</div><div class="stock-cx">944 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">6.601 kg</div><div class="stock-cx">943 caixas</div></div>
       </div>
       <div class="card available" data-name="Sassami Empanado 1kg" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Sassami Empanado 1kg</div><div class="card-code">COMPRO000064 · Cx 7 kg</div><div class="card-cancao">Cód. Canção: 91325</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000064">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.526 kg</div><div class="stock-cx">218 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.491 kg</div><div class="stock-cx">213 caixas</div></div>
       </div>
       <div class="card no-stock has-obs" data-name="Fut Wings Coxinha da Asa Empanada Tradicional" data-section="alimentos" data-status="no-stock">
         <div class="card-info"><div class="card-name">Fut Wings Tradicional</div><div class="card-code">COMPRO000121 · Cx 7 kg</div><div class="card-cancao">Cód. Canção: 91450</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000121">📅 ver validades</button></div>
         <div class="card-stock"><div class="no-stock-tag">SEM ESTOQUE</div></div>
         <div class="obs-wrap"><input class="obs-input" type="text" value="⚠️ Não digitar pedido" readonly></div>
+        
         
         
         
@@ -3153,12 +3209,12 @@
       </div>
       <div class="card available" data-name="Lasanha Bolonhesa 600g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Lasanha Bolonhesa 600g</div><div class="card-code">COMPRO000094 · Cx 7,2 kg</div><div class="card-cancao">Cód. Canção: 91415</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000094">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">3.477,6 kg</div><div class="stock-cx">483 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">3.434,4 kg</div><div class="stock-cx">477 caixas</div></div>
 
       </div>
       <div class="card available" data-name="Lasanha Quatro Queijos 600g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Lasanha Quatro Queijos 600g</div><div class="card-code">COMPRO000095 · Cx 7,2 kg</div><div class="card-cancao">Cód. Canção: 91416</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000095">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">482,4 kg</div><div class="stock-cx">67 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">468 kg</div><div class="stock-cx">65 caixas</div></div>
       </div>
       <div class="card available" data-name="Lasanha Frango 600g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Lasanha Frango 600g</div><div class="card-code">COMPRO000096 · Cx 7,2 kg</div><div class="card-cancao">Cód. Canção: 91414</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000096">📅 ver validades</button></div>
@@ -3181,11 +3237,11 @@
       </div>
       <div class="card available" data-name="Polenta" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Polenta</div><div class="card-code">COMPRO000059 · Cx 10 kg</div><div class="card-cancao">Cód. Canção: 91268</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000059">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">5.340 kg</div><div class="stock-cx">534 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">5.240 kg</div><div class="stock-cx">524 caixas</div></div>
       </div>
       <div class="card available" data-name="Pão de Queijo 300g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Pão de Queijo 300g</div><div class="card-code">COMPRO000081 · Cx 9,6 kg</div><div class="card-cancao">Cód. Canção: 91375</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000081">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.737,6 kg</div><div class="stock-cx">181 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.728 kg</div><div class="stock-cx">180 caixas</div></div>
       </div>
       <div class="card no-stock has-obs" data-name="Pão de Queijo 800g" data-section="alimentos" data-status="no-stock">
         <div class="card-info"><div class="card-name">Pão de Queijo 800g</div><div class="card-code">COMPRO000082 · Cx 9,6 kg</div><div class="card-cancao">Cód. Canção: 91374</div></div>
@@ -3198,12 +3254,13 @@
         
         
         
+        
 
 
       </div>
       <div class="card available" data-name="Filé Tilápia Empanado 600g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Filé Tilápia Empanado 600g</div><div class="card-code">PEFLCANMI000012 · Cx 6 kg</div><div class="card-cancao">Cód. Canção: 91352</div> <button class="val-btn" onclick="toggleVal(this)" data-code="PEFLCANMI000012">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">570 kg</div><div class="stock-cx">95 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">558 kg</div><div class="stock-cx">93 caixas</div></div>
       </div>
       <div class="card available" data-name="Isca de Tilápia 400g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Isca de Tilápia 400g</div><div class="card-code">PEFLCANMI000013 · Cx 3,2 kg</div><div class="card-cancao">Cód. Canção: 91353</div> <button class="val-btn" onclick="toggleVal(this)" data-code="PEFLCANMI000013">📅 ver validades</button></div>
@@ -3211,14 +3268,14 @@
       </div>
       <div class="card available" data-name="Bolinho de Tilápia 300g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Bolinho de Tilápia 300g</div><div class="card-code">COMPRO000097 · Cx 4,2 kg</div><div class="card-cancao">Cód. Canção: 91413</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000097">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.226,4 kg</div><div class="stock-cx">292 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.197 kg</div><div class="stock-cx">285 caixas</div></div>
 
 
 
       </div>
       <div class="card available" data-name="Small Fish 400g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Small Fish 400g</div><div class="card-code">COMPRO000101 · Cx 3,2 kg</div><div class="card-cancao">Cód. Canção: 91411</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000101">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">1.251,2 kg</div><div class="stock-cx">391 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">1.248 kg</div><div class="stock-cx">390 caixas</div></div>
       </div>
       <div class="card available" data-name="Small Fish 1,5kg" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Small Fish 1,5kg</div><div class="card-code">COMPRO000102 · Cx 10,5 kg</div><div class="card-cancao">Cód. Canção: 91412</div> <button class="val-btn" onclick="toggleVal(this)" data-code="COMPRO000102">📅 ver validades</button></div>
@@ -3236,7 +3293,7 @@
       </div>
       <div class="card available" data-name="Tilápia 800g" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Tilápia 800g</div><div class="card-code">PEFLCANMI000001 · Cx 10,4 kg</div><div class="card-cancao">Cód. Canção: 91127</div> <button class="val-btn" onclick="toggleVal(this)" data-code="PEFLCANMI000001">📅 ver validades</button></div>
-        <div class="card-stock"><div class="stock-kg">2.298,4 kg</div><div class="stock-cx">221 caixas</div></div>
+        <div class="card-stock"><div class="stock-kg">2.256,8 kg</div><div class="stock-cx">217 caixas</div></div>
       </div>
       <div class="card available" data-name="Tilápia em Pedaços" data-section="alimentos" data-status="available">
         <div class="card-info"><div class="card-name">Tilápia em Pedaços</div><div class="card-code">PEFLCANMI000011 · Cx 12 kg</div><div class="card-cancao">Cód. Canção: 91288</div> <button class="val-btn" onclick="toggleVal(this)" data-code="PEFLCANMI000011">📅 ver validades</button></div>
